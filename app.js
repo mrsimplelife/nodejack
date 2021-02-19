@@ -5,8 +5,16 @@ const path = require("path");
 const session = require("express-session");
 const nunjucks = require("nunjucks");
 const dotenv = require("dotenv");
-const db = require("./models");
 dotenv.config();
+const { sequelize } = require("./models");
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("connected");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 const pageRouter = require("./routes/page");
 const app = express();
 app.set("port", process.env.PORT || 3000);

@@ -5,14 +5,13 @@ const path = require("path");
 const session = require("express-session");
 const nunjucks = require("nunjucks");
 const dotenv = require("dotenv");
-
+const db = require("./models");
 dotenv.config();
 const pageRouter = require("./routes/page");
 const app = express();
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "html");
 nunjucks.configure("views", { express: app, watch: true });
-
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());

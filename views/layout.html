@@ -50,7 +50,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       window.onload = () => {
-        console.log(location.href);
         if (new URL(location.href).searchParams.get("loginError")) {
           alert(new URL(location.href).searchParams.get("loginError"));
         }

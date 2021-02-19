@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 const passport = require("passport");
 dotenv.config();
 const { sequelize } = require("./models");
+const passportConfig = require("./passport");
+
 sequelize
   .sync({ force: false })
   .then(() => {
@@ -16,6 +18,7 @@ sequelize
   .catch((err) => {
     console.error(err);
   });
+passportConfig();
 const pageRouter = require("./routes/page");
 const authRouter = require("./routes/auth");
 
@@ -26,7 +29,7 @@ nunjucks.configure("views", { express: app, watch: true });
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({

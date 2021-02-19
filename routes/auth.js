@@ -39,11 +39,25 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       }
       return res.redirect("/");
     });
-  });
+  })(req, res, next);
 });
-router.post("/logout", isLoggedIn, (req, res, next) => {
+router.get("/logout", isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.redirect("/");
 });
+module.exports = router;
+router.get(
+  "/kakao/callback",
+  isNotLoggedIn,
+  passport.authenticate("kakao", {
+    failureRedirect: "/",
+  }),
+  (req, res) => {
+    console.log(res);
+    res.redirect("/");
+  }
+);
+router.get("/kakao", isNotLoggedIn, passport.authenticate("kakao"));
+
 module.exports = router;

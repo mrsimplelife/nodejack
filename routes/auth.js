@@ -2,7 +2,9 @@ const router = require("express").Router();
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-router.post("/join", async (req, res, next) => {
+const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+
+router.post("/join", isNotLoggedIn, async (req, res, next) => {
   const { email, nick, password } = req.body;
   try {
     const exUser = await User.findOne({ where: { email } });
@@ -21,7 +23,7 @@ router.post("/join", async (req, res, next) => {
     return next(error);
   }
 });
-router.post("/login", async (req, res, next) => {
+router.post("/login", isNotLoggedIn, (req, res, next) => {
   passport.authenticate("local", (authError, user, info) => {
     if (authError) {
       console.error(authError);
@@ -39,7 +41,7 @@ router.post("/login", async (req, res, next) => {
     });
   });
 });
-router.post("/logout", async (req, res, next) => {
+router.post("/logout", isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.redirect("/");

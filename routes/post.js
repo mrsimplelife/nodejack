@@ -4,7 +4,7 @@ const router = require("express").Router();
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const { Post } = require("../models");
+const { Post, Hashtag } = require("../models");
 try {
   fs.readdirSync("uploads");
 } catch (err) {
@@ -29,14 +29,24 @@ router.post("/img", isLoggedIn, upload.single("img"), (req, res) => {
   res.json({ url: `/img/${req.file.filename}` });
 });
 router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.user.id);
   try {
-    await Post.create({
+    const post = await Post.create({
       content: req.body.content,
       img: req.body.url,
       UserId: req.user.id,
     });
+    const hashtag = req.body.content.match(/#[^\s#]*/g);
+    if (hashtag) {
+      const result = await Promise.all(
+        hashtag.map((tag) => {
+          return Hashtag.findOrCreate({
+            where: { title: tag.slice(1).toLowerCase() },
+          });
+        })
+      );
+      console.log(result);
+      await post.addHashtags(result.map((r) => r[0]));
+    }
     res.redirect("/");
   } catch (error) {
     console.error(error);

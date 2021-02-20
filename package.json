@@ -8,7 +8,9 @@
     "test": "jest ----detectOpenHandles --forceExit",
     "coverage": "jest --coverage --detectOpenHandles --forceExit",
     "db-create-dev": "sequelize db:create",
-    "db-create-test": "sequelize db:create --env test"
+    "db-create-test": "sequelize db:create --env test",
+    "artillery-test": "artillery quick --count 100 -n 50 http://localhost:3000",
+    "artillery-test2": "artillery run loadtest.json"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/mrsimplelife/nodejack#readme",
   "dependencies": {
+    "artillery": "^1.6.1",
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",

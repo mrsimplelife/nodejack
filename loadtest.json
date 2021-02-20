@@ -1,0 +1,36 @@
+{
+  "config": {
+    "target": "http://localhost:3000",
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 30
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "get": {
+            "url": "/"
+          }
+        },
+        {
+          "post": {
+            "url": "/auth/login",
+            "json": {
+              "email": "test@naver.com",
+              "password": "1234"
+            }
+          }
+        },
+        {
+          "get": {
+            "url": "http://localhost:3000/hashtag?hashtag=%EC%8B%AC%EC%8B%AC"
+          }
+        }
+      ]
+    }
+  ]
+}

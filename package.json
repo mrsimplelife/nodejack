@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app",
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "start": "nodemon server",
+    "test": "jest ----detectOpenHandles --forceExit",
+    "coverage": "jest --coverage --detectOpenHandles --forceExit",
+    "db-create-dev": "sequelize db:create",
+    "db-create-test": "sequelize db:create --env test"
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,8 @@
     "passport-kakao": "^1.0.1",
     "passport-local": "^1.0.0",
     "sequelize": "^6.5.0",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.3"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

@@ -7,17 +7,8 @@ const nunjucks = require("nunjucks");
 const dotenv = require("dotenv");
 const passport = require("passport");
 dotenv.config();
-const { sequelize } = require("./models");
 const passportConfig = require("./passport");
 
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("connected");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
 passportConfig();
 const pageRouter = require("./routes/page");
 const authRouter = require("./routes/auth");
@@ -64,6 +55,4 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render("error");
 });
-app.listen(app.get("port"), () => {
-  console.log(`http://localhost:${app.get("port")}`);
-});
+module.exports = app;
